@@ -1,0 +1,17 @@
+[package]
+name = "strata-check"
+version = "0.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+description = "Builds every Strata 2027 mineral and Crust in one graph and checks they interoperate"
+
+[dependencies]
+strata = { package = "strata-platform", path = "../crates/strata", features = ["full", "serde"] }
+# The downstream consumer. Pinned to the commit audited in platform/AUDIT.md.
+crust-core = { git = "https://github.com/doubleailes/crust-render", rev = "cd4f4e0c0b816787a078c4703d0552e71af1649d" }
+crust-assets = { git = "https://github.com/doubleailes/crust-render", rev = "cd4f4e0c0b816787a078c4703d0552e71af1649d" }
+
+[lints]
+workspace = true

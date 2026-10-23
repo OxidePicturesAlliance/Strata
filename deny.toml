@@ -1,0 +1,66 @@
+# cargo-deny configuration for the Strata workspace (`cargo deny check`).
+#
+# The `bans.deny` list and `sources.allow-git` are derived from
+# platform/strata-2027.toml; `cargo xtask check` fails when they drift.
+
+[graph]
+all-features = true
+
+[advisories]
+# Unmaintained crates are reported, but only for direct dependencies.
+unmaintained = "workspace"
+ignore = []
+
+[licenses]
+# Every mineral is MIT, Apache-2.0 or BSD-3-Clause; the rest is what their
+# transitive dependencies use.
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "BSL-1.0",
+    "Unicode-3.0",
+    "Zlib",
+]
+confidence-threshold = 0.8
+
+[licenses.private]
+ignore = true
+
+[bans]
+# Duplicates are fine in general (syn 2 + syn 3, two miniz_oxide…). They are
+# denied only for the vocabulary crates, whose types cross mineral
+# boundaries, and for the minerals themselves.
+multiple-versions = "allow"
+wildcards = "deny"
+allow-wildcard-paths = true
+deny = [
+    # Vocabulary crates.
+    { crate = "bytemuck", deny-multiple-versions = true },
+    { crate = "glam", deny-multiple-versions = true },
+    { crate = "half", deny-multiple-versions = true },
+    { crate = "num-traits", deny-multiple-versions = true },
+    { crate = "rayon", deny-multiple-versions = true },
+    { crate = "serde", deny-multiple-versions = true },
+    # Minerals (a second copy, even of the same version from another source,
+    # is a second, incompatible set of types).
+    { crate = "ocio", deny-multiple-versions = true },
+    { crate = "openqmc-rs", deny-multiple-versions = true },
+    { crate = "opensubdiv-rs", deny-multiple-versions = true },
+    { crate = "openusd", deny-multiple-versions = true },
+    { crate = "openusd-schemas", deny-multiple-versions = true },
+    { crate = "ptex-rust", deny-multiple-versions = true },
+    { crate = "vdb", deny-multiple-versions = true },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+# Every entry is a blocking item in platform/AUDIT.md.
+allow-git = [
+    "https://github.com/OxidePicturesAlliance/vdb",
+    "https://github.com/doubleailes/crust-render",
+    "https://github.com/mxpv/openusd",
+]
