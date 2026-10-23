@@ -120,15 +120,18 @@ pub fn run(spec: &Spec, results: &Path, gates: &Gates, md: &Path, json: &Path) -
         let dash = |s: &str| if s.is_empty() { "—".to_owned() } else { s.to_owned() };
         let _ = writeln!(
             o,
-            "| `{}` | {} | {} | {} | {} | {} | {} {} | {} | {verdict} |",
+            "| `{}` | {} | {} | {} | {} | {} | {} | {} | {verdict} |",
             r.mineral,
             r.version,
             if r.publishable { "✅" } else { "❌ git only" },
             mark(Some(r.builds_with_pins)),
             mark(Some(r.single_vocabulary)),
             mark(r.own_tests),
-            r.cpp_library,
-            dash(&r.cpp_target),
+            if r.cpp_target.is_empty() {
+                format!("{} (no version pinned)", r.cpp_library)
+            } else {
+                format!("{} {}", r.cpp_library, r.cpp_target)
+            },
             dash(&r.cpp_validated),
         );
     }
