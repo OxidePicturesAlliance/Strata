@@ -1,0 +1,162 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # Minerals and Crust move on their own; re-check the platform weekly.
+  schedule:
+    - cron: "17 5 * * 1"
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  spec:
+    name: Spec consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Reads rust-toolchain.toml, which `cargo xtask check` ties to the spec.
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo xtask check
+
+  lint:
+    name: fmt + clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+
+  build:
+    name: Build + test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      # strata-check: every mineral and Crust in one graph, plus the
+      # interop tests.
+      - run: cargo build --workspace --all-targets --all-features --locked
+      - run: cargo test --workspace --all-features --locked
+      # The facade alone, with each mineral feature on its own.
+      - run: cargo check -p strata-platform --no-default-features --locked
+      - shell: bash
+        run: |
+          for f in openusd opensubdiv vdb ptex openqmc ocio; do
+            cargo check -p strata-platform --no-default-features --features "$f" --locked
+          done
+
+  downstream:
+    name: Facade as a dependency
+    # Outside the workspace, so none of strata-check's [patch] entries apply:
+    # this is what a user of the facade resolves.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - shell: bash
+        run: |
+          d="$RUNNER_TEMP/downstream"
+          mkdir -p "$d/src"
+          cat > "$d/Cargo.toml" <<EOF
+          [package]
+          name = "downstream"
+          version = "0.0.0"
+          edition = "2024"
+          publish = false
+
+          [dependencies]
+          strata-platform = { path = "$GITHUB_WORKSPACE/crates/strata", features = ["full", "serde"] }
+          EOF
+          cat > "$d/src/main.rs" <<'EOF'
+          use strata::half::f16;
+          fn main() {
+              let mut grid = strata::vdb::Grid::<f16>::new(f16::ZERO);
+              grid.set_value(&strata::vdb::Coord::new(0, 0, 0), strata::openusd::gf::f16::ONE);
+              assert_eq!(grid.active_voxel_count(), 1);
+          }
+          EOF
+          cp rust-toolchain.toml "$d/"
+          cd "$d" && cargo run
+
+  deny:
+    name: cargo deny
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check advisories bans licenses sources
+
+  matrix:
+    name: Mineral list
+    runs-on: ubuntu-latest
+    outputs:
+      minerals: ${{ steps.list.outputs.minerals }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - id: list
+        run: echo "minerals=$(cargo xtask matrix)" >> "$GITHUB_OUTPUT"
+
+  mineral:
+    name: Mineral tests (${{ matrix.mineral }})
+    needs: matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        mineral: ${{ fromJSON(needs.matrix.outputs.minerals) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          # The minerals' own code is not held to Strata's lint gate.
+          rustflags: ""
+      # Clones the mineral at its pinned ref, moves its vocabulary crates to
+      # the versions in Strata's Cargo.lock, runs its test suite at the
+      # platform toolchain and writes status/<mineral>.json.
+      - run: cargo xtask test-mineral ${{ matrix.mineral }} --out status/${{ matrix.mineral }}.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mineral-${{ matrix.mineral }}
+          path: status/${{ matrix.mineral }}.json
+          if-no-files-found: ignore
+
+  status:
+    name: Conformance table
+    needs: [spec, build, deny, mineral]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: mineral-*
+          path: status
+          merge-multiple: true
+      - run: >
+          cargo xtask status --results status
+          --build ${{ needs.build.result }}
+          --deny ${{ needs.deny.result }}
+          --spec ${{ needs.spec.result }}
+          --md status/STATUS.md --json status/status.json
+      - run: cat status/STATUS.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: strata-status
+          path: |
+            status/STATUS.md
+            status/status.json
