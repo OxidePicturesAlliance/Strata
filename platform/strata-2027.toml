@@ -1,0 +1,187 @@
+# Strata 2027 — the machine-readable platform spec.
+#
+# This file is the single source of truth. `cargo xtask check` fails when the
+# facade's Cargo.toml, the workspace Cargo.toml, rust-toolchain.toml,
+# deny.toml or platform/STRATA-2027.md disagree with it, and
+# `cargo xtask render` regenerates STRATA-2027.md from it.
+
+[platform]
+name = "Strata"
+year = 2027
+# The facade crate's version; the year is the semver major.
+version = "2027.0.0-alpha.1"
+status = "draft"
+vfx_reference_platform = "CY2027"
+# `strata` is taken on crates.io (shepmaster/strata, 2019): the package is
+# `strata-platform`, its lib is `strata`, so code says `use strata::…`.
+facade_package = "strata-platform"
+facade_lib = "strata"
+
+[rust]
+# The toolchain CI builds and tests with (rust-toolchain.toml).
+toolchain = "1.96"
+# `rust-version` of every Strata crate: openusd and Crust (cranelift) need 1.96.
+msrv = "1.96"
+edition = "2024"
+
+# Vocabulary crates: their types cross mineral boundaries, so the whole graph
+# must hold exactly one version of each (deny.toml enforces it). `version` is
+# a caret range; `features` are the ones the facade enables.
+
+[vocabulary.half]
+version = "2.7"
+features = ["bytemuck", "num-traits"]
+why = "f16 in openusd (gf::f16, sdf::Value::Half), vdb (Vec3h, Value for f16) and ocio"
+
+[vocabulary.bytemuck]
+version = "1.14"
+features = ["derive"]
+why = "openusd's gf types derive Pod/Zeroable; half's bytemuck impls"
+
+[vocabulary.num-traits]
+version = "0.2.19"
+features = []
+why = "vdb's generic numeric bounds; half's num-traits impls"
+
+[vocabulary.serde]
+version = "1.0.229"
+features = ["derive"]
+why = "openusd's serde feature (sdf::Value), Crust's reports"
+
+[vocabulary.rayon]
+version = "1.10"
+features = []
+why = "one global thread pool shared by vdb tools and Crust's renderer"
+
+[vocabulary.glam]
+version = "0.34"
+features = []
+why = "Crust's math types (crust_core re-exports glam); no mineral uses it yet"
+
+# Watched crates: private to the minerals today, so duplicates are allowed.
+# They move to [vocabulary] the day a mineral exposes one of their types.
+[watched]
+flate2 = "1.1"
+zip = "9"
+lz4_flex = "0.14"
+exr = "1.74"
+image = "0.25"
+
+# Minerals. `feature` is the facade feature (and re-export) name, `package`
+# the crates.io package, `lib` its lib name. `source` is "crates.io" or "git";
+# git minerals carry `git` and `rev`. A `patch` table is a workspace-level
+# [patch.crates-io] entry strata-check needs (not part of the published
+# facade). `test_ref` is the commit or tag CI runs the mineral's own tests at.
+# `cpp_target` is the CY2027 C++ version, `cpp_validated` what the mineral's
+# reference tests actually run against ("" = not declared upstream).
+
+[minerals.openusd]
+package = "openusd"
+lib = "openusd"
+version = "0.8"
+source = "crates.io"
+extra_packages = ["openusd-schemas"]
+repository = "https://github.com/mxpv/openusd"
+test_ref = "bb9058e8d47d44f983caabf1e663401f59e3c7f0"
+test_args = ["--workspace", "--all-features"]
+patch = { git = "https://github.com/mxpv/openusd", rev = "bb9058e8d47d44f983caabf1e663401f59e3c7f0" }
+cpp_library = "AOUSD Core Specification"
+cpp_target = "1.0.1"
+cpp_validated = "1.0.1"
+on_vfx_platform = false
+blocking = ["Release main (>= bb9058e, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]"]
+
+[minerals.opensubdiv]
+package = "opensubdiv-rs"
+lib = "opensubdiv_rs"
+version = "0.5"
+source = "crates.io"
+extra_packages = []
+repository = "https://github.com/doubleailes/OpenSubdiv-rs"
+test_ref = "0.5.0"
+test_args = ["--all-features"]
+cpp_library = "OpenSubdiv"
+cpp_target = "3.8.x"
+cpp_validated = ""
+on_vfx_platform = true
+blocking = []
+
+[minerals.vdb]
+package = "vdb"
+lib = "vdb"
+version = "0.1"
+source = "git"
+git = "https://github.com/OxidePicturesAlliance/vdb"
+rev = "6dbb632f13754169119939c3576b4fc3b65d434f"
+extra_packages = []
+repository = "https://github.com/OxidePicturesAlliance/vdb"
+test_ref = "6dbb632f13754169119939c3576b4fc3b65d434f"
+test_args = ["--all-features"]
+cpp_library = "OpenVDB"
+cpp_target = "14.x"
+cpp_validated = "10.0.1"
+on_vfx_platform = true
+blocking = [
+    "Publish on crates.io: `vdb` is taken (rvputten/vdb 0.4.0), rename the package (e.g. `openvdb-rs`, keep `[lib] name = \"vdb\"`) and publish >= 0.5.0",
+]
+
+[minerals.ptex]
+package = "ptex-rust"
+lib = "ptex"
+version = "0.5"
+source = "crates.io"
+extra_packages = []
+repository = "https://github.com/doubleailes/ptex-rs"
+test_ref = "0.5.0"
+test_args = ["--all-features"]
+cpp_library = "Ptex"
+cpp_target = "2.5.x"
+cpp_validated = ""
+on_vfx_platform = true
+blocking = []
+
+[minerals.openqmc]
+package = "openqmc-rs"
+lib = "openqmc"
+version = "0.2.4"
+source = "crates.io"
+extra_packages = []
+repository = "https://github.com/doubleailes/openqmc-rs"
+test_ref = "0.2.4"
+test_args = ["--all-features"]
+cpp_library = "OpenQMC"
+cpp_target = ""
+cpp_validated = ""
+on_vfx_platform = false
+blocking = []
+
+[minerals.ocio]
+package = "ocio"
+lib = "ocio"
+version = "0.2.2"
+source = "crates.io"
+extra_packages = []
+repository = "https://github.com/doubleailes/ocio-rs"
+test_ref = "0.2.2"
+test_args = ["--lib", "--tests"]
+cpp_library = "OpenColorIO"
+cpp_target = "2.6.x"
+cpp_validated = "2.5.0+ (ported to 93878f9, targeting 2.6.0)"
+on_vfx_platform = true
+blocking = []
+
+# Downstream consumers strata-check builds against the facade.
+[consumers.crust]
+repository = "https://github.com/doubleailes/crust-render"
+rev = "cd4f4e0c0b816787a078c4703d0552e71af1649d"
+packages = ["crust-core", "crust-assets"]
+blocking = [
+    "Depend on opensubdiv-rs from crates.io (`opensubdiv-rs = \"0.5.0\"`), not the git tag; strata-check patches it meanwhile",
+]
+
+# Workspace patches strata-check needs on top of [minerals.*.patch].
+[[patches]]
+source = "https://github.com/doubleailes/OpenSubdiv-rs"
+package = "opensubdiv-rs"
+version = "0.5.0"
+why = "Crust depends on the git tag; same release, but a second source is a second, incompatible crate"
