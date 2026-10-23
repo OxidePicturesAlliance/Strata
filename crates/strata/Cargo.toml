@@ -1,0 +1,74 @@
+[package]
+# `strata` is taken on crates.io (shepmaster/strata, 2019). The lib is still
+# named `strata`, so dependents write `use strata::…` and `strata::bytemuck`.
+name = "strata-platform"
+version = "2027.0.0-alpha.1"
+edition = "2024"
+rust-version = "1.96"
+license = "MIT"
+repository = "https://github.com/OxidePicturesAlliance/strata"
+description = "Strata 2027: the Oxide Pictures Alliance reference platform for pure-Rust VFX and animation libraries"
+keywords = ["vfx", "animation", "usd", "openvdb", "platform"]
+categories = ["graphics", "rendering"]
+readme = "../../README.md"
+# Not publishable until vdb is on crates.io (platform/AUDIT.md, B1). Do not add
+# `version = …` to the vdb git dependency to work around it: crates.io would
+# then resolve the unrelated `vdb` crate (rvputten/vdb) in its place.
+publish = false
+
+[lib]
+name = "strata"
+
+[features]
+# One feature per mineral, named after the mineral; `full` enables them all.
+full = ["openusd", "opensubdiv", "vdb", "ptex", "openqmc", "ocio"]
+# Every schema family, so `strata::openusd_schemas::{geom, shade, …}` work.
+openusd = [
+    "dep:openusd",
+    "dep:openusd-schemas",
+    "openusd-schemas/geom",
+    "openusd-schemas/lux",
+    "openusd-schemas/media",
+    "openusd-schemas/physics",
+    "openusd-schemas/proc",
+    "openusd-schemas/render",
+    "openusd-schemas/semantics",
+    "openusd-schemas/shade",
+    "openusd-schemas/skel",
+    "openusd-schemas/ui",
+    "openusd-schemas/vol",
+]
+opensubdiv = ["dep:opensubdiv"]
+vdb = ["dep:vdb"]
+ptex = ["dep:ptex"]
+openqmc = ["dep:openqmc"]
+ocio = ["dep:ocio"]
+# serde impls on the vocabulary types (and on openusd's values when enabled).
+serde = ["half/serde", "glam/serde", "openusd?/serde"]
+
+# Caret ranges only: an exact `=` pin in a library makes downstream
+# resolution fail. Versions come from platform/strata-2027.toml.
+[dependencies]
+# Vocabulary crates, re-exported unconditionally.
+bytemuck = { version = "1.14", features = ["derive"] }
+glam = "0.34"
+half = { version = "2.7", features = ["bytemuck", "num-traits"] }
+num-traits = "0.2.19"
+rayon = "1.10"
+serde = { version = "1.0.229", features = ["derive"] }
+
+# Minerals, one feature each.
+ocio = { version = "0.2.2", optional = true }
+openqmc = { package = "openqmc-rs", version = "0.2.4", optional = true }
+opensubdiv = { package = "opensubdiv-rs", version = "0.5", optional = true }
+openusd = { version = "0.8", optional = true }
+openusd-schemas = { version = "0.8", optional = true }
+ptex = { package = "ptex-rust", version = "0.5", optional = true }
+# Git-only: blocks publishing the facade on crates.io (platform/AUDIT.md, B1).
+vdb = { git = "https://github.com/OxidePicturesAlliance/vdb", rev = "6dbb632f13754169119939c3576b4fc3b65d434f", optional = true }
+
+[package.metadata.docs.rs]
+all-features = true
+
+[lints]
+workspace = true

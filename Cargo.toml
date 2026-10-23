@@ -1,0 +1,32 @@
+[workspace]
+resolver = "3"
+members = ["crates/strata", "check", "xtask"]
+# `cargo xtask test-mineral` clones minerals under target/minerals; they are
+# not members.
+exclude = ["target"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.96"
+license = "MIT"
+repository = "https://github.com/OxidePicturesAlliance/strata"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+
+# Patches strata-check needs to build every mineral and Crust in one graph.
+# They apply to this workspace only, never to users of the published facade.
+# Each one is listed in platform/strata-2027.toml (`cargo xtask check` keeps
+# the two in sync) and is an upstream blocking item in platform/AUDIT.md.
+[patch.crates-io]
+# Crust needs openusd API that is only on `main`; drop once openusd 0.9 ships.
+openusd = { git = "https://github.com/mxpv/openusd", rev = "bb9058e8d47d44f983caabf1e663401f59e3c7f0" }
+openusd-schemas = { git = "https://github.com/mxpv/openusd", rev = "bb9058e8d47d44f983caabf1e663401f59e3c7f0" }
+
+# Crust depends on the git tag of the same release; folding it back onto
+# crates.io keeps one opensubdiv-rs (two sources would be two crates).
+[patch."https://github.com/doubleailes/OpenSubdiv-rs"]
+opensubdiv-rs = "0.5.0"

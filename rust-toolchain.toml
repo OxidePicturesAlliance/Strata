@@ -1,0 +1,5 @@
+# The toolchain CI builds and tests with; must equal `rust.toolchain` in
+# platform/strata-2027.toml (`cargo xtask check`).
+[toolchain]
+channel = "1.96"
+components = ["rustfmt", "clippy"]
