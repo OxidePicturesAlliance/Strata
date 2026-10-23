@@ -181,9 +181,21 @@ and openqmc-rs undeclared.
 
 Strata does not modify minerals; each item is the exact change to request.
 
-### B1. vdb — publish on crates.io (**blocking** for publishing `strata`)
+### B0. Strata itself — the `strata` crate name is taken (resolved by renaming)
 
-The facade cannot be published while it has a git dependency.
+Found while bootstrapping (after the pins were approved): `strata` on
+crates.io is an unrelated crate (shepmaster/strata 0.1.1, 2019). The facade is
+published as **`strata-platform`** with `[lib] name = "strata"`, so code still
+writes `use strata::…` and `#[serde(crate = "strata::serde")]`. If the name is
+ever transferred, the package can be renamed without touching dependents'
+code.
+
+### B1. vdb — publish on crates.io (**blocking** for publishing `strata-platform`)
+
+The facade cannot be published while it has a git dependency, so
+`crates/strata/Cargo.toml` is `publish = false` until this is done. Do not
+work around it by adding `version = "0.1"` to the git dependency: `cargo
+publish` would then resolve the unrelated crates.io `vdb` in its place.
 
 ```toml
 # vdb/Cargo.toml
