@@ -149,20 +149,33 @@ the vocabulary list.
 | ocio | `"0.2.2"` | crates.io (WIP) |
 | Crust (check only) | git `cd4f4e0` | not published by design |
 
-### C++ reference versions — **need confirmation**
+### C++ reference versions vs. VFX Reference Platform CY2027
 
-vfxplatform.com was unreachable from the audit sandbox, so the
-VFX Reference Platform year mapping below is not verified.
+CY2027 values were taken from vfxplatform.com on 2026-10-23 (screenshots
+supplied by the maintainer; the site was unreachable from the audit sandbox).
+Several CY2027 entries are still marked "release expected by" a date.
 
-| Mineral | Reference stated by the mineral | Proposal |
-|---|---|---|
-| openusd | AOUSD Core Specification 1.0.1 (`docs/aousd_core_spec_1.0.1.pdf`) | AOUSD Core Spec 1.0.1 |
-| vdb | OpenVDB **10.0.1** (test fixtures, benchmarks) | 10.0.1 — this is VFX Platform CY2023-era, well behind CY2027; flag as a gap |
-| ocio | between OCIO v2.5.0 and v2.6.0 (`UPSTREAM.md`, ported to `93878f9`, targeting v2.6.0) | 2.6.0 (target) |
-| opensubdiv-rs | *none stated* (ports the 3.x Sdc/Vtr/Far layers) | ask upstream to declare one |
-| ptex-rust | *none stated* (wdas/ptex) | ask upstream to declare one |
-| openqmc-rs | *none stated* (bit-for-bit with upstream `main`) | ask upstream to declare a tag/commit |
-| VFX Reference Platform year | — | **CY2027** for the platform; per-mineral year = the year whose list contains the declared C++ version (to be filled from vfxplatform.com) |
+| Mineral | CY2027 target | Validated against (stated by the mineral) | Status |
+|---|---|---|---|
+| ocio | OpenColorIO **2.6.x** (release expected by Oct 1st) | between v2.5.0 and v2.6.0: ported to `93878f9`, targeting v2.6.0 (`UPSTREAM.md`) | close; finish the port to the v2.6.0 tag |
+| opensubdiv-rs | OpenSubdiv **3.8.x** (release expected by Oct 1st) | *not stated* (ports the 3.x Sdc/Vtr/Far layers) | unknown; upstream must declare its version |
+| vdb | OpenVDB **14.x** (release expected by Nov 1st) | OpenVDB **10.0.1** (test fixtures, benchmarks) | **lagging by 4 majors** |
+| ptex-rust | Ptex **2.5.x** | *not stated* (wdas/ptex) | unknown; upstream must declare its version |
+| openusd | *USD is not on the VFX Reference Platform list* | AOUSD Core Specification 1.0.1 (`docs/aousd_core_spec_1.0.1.pdf`) | reference = AOUSD Core Spec 1.0.1 |
+| openqmc-rs | *OpenQMC is not on the VFX Reference Platform list* | *not stated* (bit-for-bit with upstream `main`) | reference = an upstream tag/commit, to be declared |
+
+Related CY2027 rows that matter to Strata, though no mineral ports them yet:
+OpenEXR 3.5.x (Crust uses the pure-Rust `exr` crate), Imath 3.2.x, ACES 2.0,
+C++20, gcc 14.2 / glibc 2.34, macOS 14.0 minimum deployment target, Windows
+SDK 10.0.22621 / VS build tools v14.44. The OS minimums inform the CI matrix
+(Rust's own targets already meet them).
+
+Proposal for the spec: each mineral carries **two** fields, `cpp_target` (the
+CY2027 version) and `cpp_validated` (what its reference tests actually run
+against). A mineral is *conformant* when the two match, and *lagging* when it
+builds and passes tests against an older C++ version. For 2027.0.0-alpha.1
+that makes vdb lagging, ocio near-conformant, and opensubdiv-rs, ptex-rust
+and openqmc-rs undeclared.
 
 ## 5. Blocking items (upstream tasks)
 
@@ -204,7 +217,8 @@ Until then strata-check patches the git source back to crates.io.
 - **opensubdiv-rs**, **ptex-rust**, **openqmc-rs**: state the C++ release/commit
   they are validated against (README + a `package.metadata.strata.reference`
   key would let Strata check it automatically).
-- **vdb**: validate against a CY2027-era OpenVDB rather than 10.0.1.
+- **vdb**: validate against OpenVDB 14.x (CY2027) rather than 10.0.1.
+- **opensubdiv-rs**: validate against OpenSubdiv 3.8.x; **ptex-rust**: against Ptex 2.5.x; **ocio**: finish the port to the OCIO v2.6.0 tag.
 - **openusd**, **vdb**: optional `glam` feature with `From` conversions, so the
   platform's `glam` pin becomes a real interop point instead of Crust-only.
 
