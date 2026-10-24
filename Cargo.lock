@@ -3,6 +3,20 @@
 version = 4
 
 [[package]]
+name = "OpenVDB-rs"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f93ab417755cebd51da5f45bd4bf21557e26d6a6a0aca53afbe03a5e71f32717"
+dependencies = [
+ "flate2",
+ "half",
+ "lz4_flex",
+ "num-traits",
+ "rayon",
+ "thiserror 1.0.69",
+]
+
+[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -902,6 +916,7 @@ dependencies = [
 name = "strata-platform"
 version = "2027.0.0-alpha.1"
 dependencies = [
+ "OpenVDB-rs",
  "bytemuck",
  "glam",
  "half",
@@ -914,7 +929,6 @@ dependencies = [
  "ptex-rust",
  "rayon",
  "serde",
- "vdb",
 ]
 
 [[package]]
@@ -1109,19 +1123,6 @@ version = "0.1.0"
 source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
 dependencies = [
  "glam",
-]
-
-[[package]]
-name = "vdb"
-version = "0.1.0"
-source = "git+https://github.com/OxidePicturesAlliance/vdb?rev=6dbb632f13754169119939c3576b4fc3b65d434f#6dbb632f13754169119939c3576b4fc3b65d434f"
-dependencies = [
- "flate2",
- "half",
- "lz4_flex",
- "num-traits",
- "rayon",
- "thiserror 1.0.69",
 ]
 
 [[package]]
