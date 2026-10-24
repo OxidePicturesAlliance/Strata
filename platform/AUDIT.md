@@ -203,7 +203,21 @@ code.
 
 Resolved 2026-10-24: vdb is published as `OpenVDB-rs` 0.1.0 (lib `OpenVDB_rs`,
 from `88639ae`); the facade depends on it as `vdb = { package = "OpenVDB-rs",
-version = "0.1" }`, so `strata::vdb` is unchanged. The original request:
+version = "0.1" }`, so `strata::vdb` is unchanged.
+
+**B1b (open).** The rename (`88639ae`, the published commit) also renamed the
+lib to `OpenVDB_rs`, but vdb's own tests, benches and examples still write
+`use vdb::…`, so its test suite does not compile at the published commit.
+Until it is fixed, `test_ref` stays at `6dbb632` (identical source, old
+package name). The fix, then publish 0.1.1:
+
+```toml
+# vdb/Cargo.toml
+[lib]
+name = "vdb"                 # keeps `use vdb::…` working, as originally requested
+```
+
+The original request:
 
 The facade cannot be published while it has a git dependency, so
 `crates/strata/Cargo.toml` is `publish = false` until this is done. Do not
