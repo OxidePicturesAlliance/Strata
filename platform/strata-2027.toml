@@ -82,14 +82,14 @@ version = "0.8"
 source = "crates.io"
 extra_packages = ["openusd-schemas"]
 repository = "https://github.com/mxpv/openusd"
-test_ref = "bb9058e8d47d44f983caabf1e663401f59e3c7f0"
+test_ref = "68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f"
 test_args = ["--workspace", "--all-features"]
-patch = { git = "https://github.com/mxpv/openusd", rev = "bb9058e8d47d44f983caabf1e663401f59e3c7f0" }
+patch = { git = "https://github.com/mxpv/openusd", rev = "68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f" }
 cpp_library = "AOUSD Core Specification"
 cpp_target = "1.0.1"
 cpp_validated = "1.0.1"
 on_vfx_platform = false
-blocking = ["Release main (>= bb9058e, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]"]
+blocking = ["Release main (>= 68a867a, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]"]
 
 [minerals.opensubdiv]
 package = "opensubdiv-rs"
@@ -169,7 +169,7 @@ blocking = []
 # Downstream consumers strata-check builds against the facade.
 [consumers.crust]
 repository = "https://github.com/doubleailes/crust-render"
-rev = "cd4f4e0c0b816787a078c4703d0552e71af1649d"
+rev = "5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 packages = ["crust-core", "crust-assets"]
 blocking = [
     "Depend on opensubdiv-rs from crates.io (`opensubdiv-rs = \"0.5.0\"`), not the git tag; strata-check patches it meanwhile",
