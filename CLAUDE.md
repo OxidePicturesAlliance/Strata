@@ -44,7 +44,7 @@ To change a pin: edit the spec, run `cargo xtask render`, update the manifests u
   (git + crates.io), which is two incompatible crates.
 - **vdb comes from crates.io as `OpenVDB-rs`** (lib `OpenVDB_rs`), under the facade key `vdb`
   so code says `strata::vdb`. The crates.io `vdb` is an unrelated crate: never depend on it.
-- **Workspace `[patch]`** (openusd → `main` commit `bb9058e`; Crust's opensubdiv-rs git tag →
+- **Workspace `[patch]`** (openusd → `main` commit `68a867a`; Crust's opensubdiv-rs git tag →
   crates.io) exists only so strata-check can build Crust. It does not affect facade users.
   Remove each patch when the matching upstream blocker is resolved (AUDIT.md §5).
 - **openusd tracks Crust's lock**, not openusd `main` HEAD: newer `main` breaks Crust's API use.

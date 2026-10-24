@@ -56,17 +56,17 @@ Built by `strata-check` against the platform in every CI run.
 
 | Consumer | Repository | Revision | Packages |
 |---|---|---|---|
-| crust | <https://github.com/doubleailes/crust-render> | `cd4f4e0` | `crust-core`, `crust-assets` |
+| crust | <https://github.com/doubleailes/crust-render> | `5e5721e` | `crust-core`, `crust-assets` |
 
 ## Blocking items
 
-- **openusd**: Release main (>= bb9058e, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]
+- **openusd**: Release main (>= 68a867a, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]
 - **crust**: Depend on opensubdiv-rs from crates.io (`opensubdiv-rs = "0.5.0"`), not the git tag; strata-check patches it meanwhile
 
 ## Workspace patches (strata-check only)
 
 These apply to the Strata workspace, never to users of the published facade.
 
-- `openusd` → https://github.com/mxpv/openusd at `bb9058e`
+- `openusd` → https://github.com/mxpv/openusd at `68a867a`
 - `opensubdiv-rs` from https://github.com/doubleailes/OpenSubdiv-rs → crates.io 0.5.0: Crust depends on the git tag; same release, but a second source is a second, incompatible crate
 

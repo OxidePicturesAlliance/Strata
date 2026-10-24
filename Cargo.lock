@@ -148,7 +148,7 @@ checksum = "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5"
 [[package]]
 name = "crust-assets"
 version = "0.8.0"
-source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
+source = "git+https://github.com/doubleailes/crust-render?rev=5e5721e115848ab4a7c6a9472f17adf7ad90f8db#5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 dependencies = [
  "crust-core",
  "exr",
@@ -164,7 +164,7 @@ dependencies = [
 [[package]]
 name = "crust-core"
 version = "0.8.0"
-source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
+source = "git+https://github.com/doubleailes/crust-render?rev=5e5721e115848ab4a7c6a9472f17adf7ad90f8db#5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 dependencies = [
  "crust-mtlx",
  "crust-nn",
@@ -185,7 +185,7 @@ dependencies = [
 [[package]]
 name = "crust-mtlx"
 version = "0.8.0"
-source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
+source = "git+https://github.com/doubleailes/crust-render?rev=5e5721e115848ab4a7c6a9472f17adf7ad90f8db#5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 dependencies = [
  "glam",
  "roxmltree",
@@ -194,12 +194,12 @@ dependencies = [
 [[package]]
 name = "crust-nn"
 version = "0.8.0"
-source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
+source = "git+https://github.com/doubleailes/crust-render?rev=5e5721e115848ab4a7c6a9472f17adf7ad90f8db#5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 
 [[package]]
 name = "crust-rt"
 version = "0.8.0"
-source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
+source = "git+https://github.com/doubleailes/crust-render?rev=5e5721e115848ab4a7c6a9472f17adf7ad90f8db#5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 dependencies = [
  "glam",
  "rayon",
@@ -572,7 +572,7 @@ checksum = "4e614c044ae2cba17329acd083626fe8e3bc5f3f1c30b0291c705f97eb031b24"
 [[package]]
 name = "openusd"
 version = "0.8.0"
-source = "git+https://github.com/mxpv/openusd?rev=bb9058e8d47d44f983caabf1e663401f59e3c7f0#bb9058e8d47d44f983caabf1e663401f59e3c7f0"
+source = "git+https://github.com/mxpv/openusd?rev=68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f#68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f"
 dependencies = [
  "bitflags",
  "bytemuck",
@@ -593,7 +593,7 @@ dependencies = [
 [[package]]
 name = "openusd-build"
 version = "0.8.0"
-source = "git+https://github.com/mxpv/openusd?rev=bb9058e8d47d44f983caabf1e663401f59e3c7f0#bb9058e8d47d44f983caabf1e663401f59e3c7f0"
+source = "git+https://github.com/mxpv/openusd?rev=68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f#68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f"
 dependencies = [
  "openusd",
  "prettyplease",
@@ -608,7 +608,7 @@ dependencies = [
 [[package]]
 name = "openusd-schemas"
 version = "0.8.0"
-source = "git+https://github.com/mxpv/openusd?rev=bb9058e8d47d44f983caabf1e663401f59e3c7f0#bb9058e8d47d44f983caabf1e663401f59e3c7f0"
+source = "git+https://github.com/mxpv/openusd?rev=68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f#68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f"
 dependencies = [
  "bitflags",
  "derive_more",
@@ -1120,7 +1120,7 @@ checksum = "b4ac048d71ede7ee76d585517add45da530660ef4390e49b098733c6e897f254"
 [[package]]
 name = "utils"
 version = "0.1.0"
-source = "git+https://github.com/doubleailes/crust-render?rev=cd4f4e0c0b816787a078c4703d0552e71af1649d#cd4f4e0c0b816787a078c4703d0552e71af1649d"
+source = "git+https://github.com/doubleailes/crust-render?rev=5e5721e115848ab4a7c6a9472f17adf7ad90f8db#5e5721e115848ab4a7c6a9472f17adf7ad90f8db"
 dependencies = [
  "glam",
 ]

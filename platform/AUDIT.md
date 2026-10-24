@@ -107,6 +107,15 @@ One copy each of `half 2.7.1`, `bytemuck 1.25.2`, `num-traits 0.2.19`,
 `serde 1.0.229`, `rayon 1.12.0`, `glam 0.34.1`, `flate2 1.1.10`, `zip 9.0.5`.
 `cargo +1.96 check` and `cargo +1.97 check` both finish clean.
 
+### 3.3 Update 2026-10-24 — openusd `68a867a`, Crust `5e5721e`
+
+Crust `main` moved onto openusd's new `MaterialBindingAPI` (issue #2) and its
+lock now records openusd `main` at `68a867a`; it no longer builds against
+`bb9058e`. Strata moves both revs together: openusd patch and `test_ref` →
+`68a867a`, Crust → `5e5721e` (Crust `main`). B3 is still open: Crust's
+`strata-2027` branch (crates.io `opensubdiv-rs = "0.5.0"`, `ocio = "0.2.2"`)
+is not merged into `main` yet, so the opensubdiv-rs patch stays.
+
 ## 4. Proposed pins (for approval)
 
 Ranges are caret ranges whose floor is the highest floor any participant
@@ -141,13 +150,13 @@ the vocabulary list.
 
 | Mineral | Pin in the facade | Source for 2027.0.0-alpha.1 |
 |---|---|---|
-| openusd + openusd-schemas | `"0.8"` | **git `bb9058e`** via `[patch.crates-io]` in the workspace (needed by Crust); the facade itself depends on crates.io `0.8` |
+| openusd + openusd-schemas | `"0.8"` | **git `68a867a`** (was `bb9058e`, see §3.3) via `[patch.crates-io]` in the workspace (needed by Crust); the facade itself depends on crates.io `0.8` |
 | opensubdiv-rs | `"0.5"` | crates.io |
 | vdb | — | **git `6dbb632`** (`rev =`) — git-only |
 | ptex-rust | `"0.5"` | crates.io |
 | openqmc-rs | `"0.2.4"` | crates.io |
 | ocio | `"0.2.2"` | crates.io (WIP) |
-| Crust (check only) | git `cd4f4e0` | not published by design |
+| Crust (check only) | git `5e5721e` (was `cd4f4e0`, see §3.3) | not published by design |
 
 ### C++ reference versions vs. VFX Reference Platform CY2027
 
@@ -213,7 +222,7 @@ name = "vdb"                 # keeps `use vdb::…` working
 
 ### B2. openusd — release 0.9 (**blocking** for Crust / strata-check without git patches)
 
-Release `main` (≥ `bb9058e`, with `zip = "9"`) as 0.9.0. Then Strata moves to
+Release `main` (≥ `68a867a`, with `zip = "9"`) as 0.9.0. Then Strata moves to
 `openusd = "0.9"`, drops the `[patch]`, and Crust drops its own patch.
 
 ### B3. Crust — depend on opensubdiv-rs from crates.io (**blocking** for "no duplicate minerals")

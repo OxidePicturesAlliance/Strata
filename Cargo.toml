@@ -23,8 +23,8 @@ all = { level = "deny", priority = -1 }
 # the two in sync) and is an upstream blocking item in platform/AUDIT.md.
 [patch.crates-io]
 # Crust needs openusd API that is only on `main`; drop once openusd 0.9 ships.
-openusd = { git = "https://github.com/mxpv/openusd", rev = "bb9058e8d47d44f983caabf1e663401f59e3c7f0" }
-openusd-schemas = { git = "https://github.com/mxpv/openusd", rev = "bb9058e8d47d44f983caabf1e663401f59e3c7f0" }
+openusd = { git = "https://github.com/mxpv/openusd", rev = "68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f" }
+openusd-schemas = { git = "https://github.com/mxpv/openusd", rev = "68a867a69f3fb429a30f9e1155a0a30a3d2cdf9f" }
 
 # Crust depends on the git tag of the same release; folding it back onto
 # crates.io keeps one opensubdiv-rs (two sources would be two crates).
