@@ -18,8 +18,8 @@ facade_package = "strata-platform"
 facade_lib = "strata"
 
 [rust]
-# The toolchain CI builds and tests with (rust-toolchain.toml).
-toolchain = "1.96"
+# The toolchain CI builds and tests with (rust-toolchain.toml); Crust pins 1.99.
+toolchain = "1.99"
 # `rust-version` of every Strata crate: openusd and Crust (cranelift) need 1.96.
 msrv = "1.96"
 edition = "2024"
@@ -107,23 +107,19 @@ on_vfx_platform = true
 blocking = []
 
 [minerals.vdb]
-package = "vdb"
-lib = "vdb"
+package = "OpenVDB-rs"
+lib = "OpenVDB_rs"
 version = "0.1"
-source = "git"
-git = "https://github.com/OxidePicturesAlliance/vdb"
-rev = "6dbb632f13754169119939c3576b4fc3b65d434f"
+source = "crates.io"
 extra_packages = []
 repository = "https://github.com/OxidePicturesAlliance/vdb"
-test_ref = "6dbb632f13754169119939c3576b4fc3b65d434f"
+test_ref = "88639ae15514a2f2fc2e00d4e8c7307f20ff3beb"
 test_args = ["--all-features"]
 cpp_library = "OpenVDB"
 cpp_target = "14.x"
 cpp_validated = "10.0.1"
 on_vfx_platform = true
-blocking = [
-    "Publish on crates.io: `vdb` is taken (rvputten/vdb 0.4.0), rename the package (e.g. `openvdb-rs`, keep `[lib] name = \"vdb\"`) and publish >= 0.5.0",
-]
+blocking = []
 
 [minerals.ptex]
 package = "ptex-rust"

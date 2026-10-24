@@ -10,7 +10,7 @@ The Strata 2027 platform pins the shared vocabulary crates and the pure-Rust por
 
 | Component | Strata 2027 |
 |---|---|
-| Toolchain (CI) | 1.96 |
+| Toolchain (CI) | 1.99 |
 | Minimum supported Rust version | 1.96 |
 | Edition (Strata crates) | 2024 |
 
@@ -36,7 +36,7 @@ Exactly one version of each is allowed in a conformant graph.
 | `opensubdiv` | `opensubdiv-rs` | 0.5 | crates.io | OpenSubdiv | 3.8.x | — | undeclared |
 | `openusd` | `openusd`, `openusd-schemas` | 0.8 | crates.io | AOUSD Core Specification | not on the list (target 1.0.1) | 1.0.1 | matches |
 | `ptex` | `ptex-rust` (lib `ptex`) | 0.5 | crates.io | Ptex | 2.5.x | — | undeclared |
-| `vdb` | `vdb` | 0.1 | git `6dbb632` (blocks publishing) | OpenVDB | 14.x | 10.0.1 | lagging |
+| `vdb` | `OpenVDB-rs` | 0.1 | crates.io | OpenVDB | 14.x | 10.0.1 | lagging |
 
 ## Watched crates
 
@@ -61,7 +61,6 @@ Built by `strata-check` against the platform in every CI run.
 ## Blocking items
 
 - **openusd**: Release main (>= bb9058e, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]
-- **vdb**: Publish on crates.io: `vdb` is taken (rvputten/vdb 0.4.0), rename the package (e.g. `openvdb-rs`, keep `[lib] name = "vdb"`) and publish >= 0.5.0
 - **crust**: Depend on opensubdiv-rs from crates.io (`opensubdiv-rs = "0.5.0"`), not the git tag; strata-check patches it meanwhile
 
 ## Workspace patches (strata-check only)
