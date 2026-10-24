@@ -9,7 +9,7 @@
 name = "Strata"
 year = 2027
 # The facade crate's version; the year is the semver major.
-version = "2027.0.0-alpha.1"
+version = "2027.0.0-alpha.2"
 status = "draft"
 vfx_reference_platform = "CY2027"
 # `strata` is taken on crates.io (shepmaster/strata, 2019): the package is

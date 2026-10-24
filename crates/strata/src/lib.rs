@@ -21,7 +21,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! strata-platform = { version = "2027.0.0-alpha.1", features = ["openusd", "vdb"] }
+//! strata-platform = { version = "2027.0.0-alpha.2", features = ["openusd", "vdb"] }
 //! ```
 //!
 //! ```

@@ -2,7 +2,7 @@
 # `strata` is taken on crates.io (shepmaster/strata, 2019). The lib is still
 # named `strata`, so dependents write `use strata::…` and `strata::bytemuck`.
 name = "strata-platform"
-version = "2027.0.0-alpha.1"
+version = "2027.0.0-alpha.2"
 edition = "2024"
 rust-version = "1.96"
 license = "MIT"

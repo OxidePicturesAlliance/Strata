@@ -2,7 +2,7 @@
 
 # Strata 2027
 
-**Status:** draft · **Facade:** `strata-platform` 2027.0.0-alpha.1 (lib `strata`) · **Tracks:** VFX Reference Platform CY2027
+**Status:** draft · **Facade:** `strata-platform` 2027.0.0-alpha.2 (lib `strata`) · **Tracks:** VFX Reference Platform CY2027
 
 The Strata 2027 platform pins the shared vocabulary crates and the pure-Rust ports of the VFX libraries ("minerals") so that every crate built on Strata 2027 shares one version of each. Version ranges are Cargo caret ranges. Anything built against Strata 2027 should resolve to versions inside every range below.
 
