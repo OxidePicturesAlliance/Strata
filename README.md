@@ -44,14 +44,13 @@ grid.set_value(&vdb::Coord::new(0, 0, 0), openusd::gf::f16::ONE);
   Use `#[bytemuck(crate = "strata::bytemuck")]` / `#[serde(crate = "strata::serde")]`, or add the
   crate as a direct dependency at the spec's range. Cargo unifies it, so there is still one copy.
 
-## ⚠️ Not on crates.io yet
+## Upstream blockers
 
-A crate published on crates.io cannot have git dependencies. Strata 2027.0.0-alpha.1 has some,
-so the facade is `publish = false` and is used from git for now. These items block publishing:
+The facade has only crates.io dependencies, so it can be published. `strata-check` still needs
+git patches to build every mineral and Crust in one graph:
 
 | Blocker | Item |
 |---|---|
-| **vdb** | git-only; the crates.io name `vdb` belongs to an unrelated crate. **Publish on crates.io** under a new package name (lib name `vdb`). |
 | **openusd** | Crust needs unreleased API, so strata-check patches openusd to a `main` commit. **Release 0.9 on crates.io.** (The facade itself would work with crates.io 0.8.) |
 | **Crust** | depends on opensubdiv-rs by git tag, which is a second copy of the crate; strata-check patches it back to crates.io. **Depend on the crates.io release.** |
 
@@ -62,7 +61,7 @@ The exact `Cargo.toml` change for each one is in [`platform/AUDIT.md`](platform/
 A mineral is **Strata 2027 conformant** when all of these hold:
 
 1. **It builds against the pins.** It resolves and compiles in one graph with every other
-   mineral and the reference consumer (Crust), at the platform toolchain (Rust 1.96), on
+   mineral and the reference consumer (Crust), at the platform toolchain (Rust 1.99), on
    Linux, macOS and Windows (`strata-check`).
 2. **There are no duplicate vocabulary crates.** That graph holds exactly one version of each
    vocabulary crate and of each mineral (`cargo deny check bans`).

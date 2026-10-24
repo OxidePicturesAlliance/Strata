@@ -42,8 +42,8 @@ To change a pin: edit the spec, run `cargo xtask render`, update the manifests u
 - **deny.toml** uses `multiple-versions = "allow"` plus `deny-multiple-versions = true` per
   vocabulary crate *and per mineral package*. That catches the same version from two sources
   (git + crates.io), which is two incompatible crates.
-- **Facade is `publish = false`** until vdb is on crates.io. Never add `version = …` to the vdb
-  git dependency: crates.io would resolve the unrelated `vdb` crate instead.
+- **vdb comes from crates.io as `OpenVDB-rs`** (lib `OpenVDB_rs`), under the facade key `vdb`
+  so code says `strata::vdb`. The crates.io `vdb` is an unrelated crate: never depend on it.
 - **Workspace `[patch]`** (openusd → `main` commit `bb9058e`; Crust's opensubdiv-rs git tag →
   crates.io) exists only so strata-check can build Crust. It does not affect facade users.
   Remove each patch when the matching upstream blocker is resolved (AUDIT.md §5).
@@ -54,7 +54,7 @@ To change a pin: edit the spec, run `cargo xtask render`, update the manifests u
   screenshots on 2026-10-23 (the site is not reachable from the sandbox).
 - **The minerals are never modified here.** A needed change becomes an upstream task in
   `platform/AUDIT.md` with the exact `Cargo.toml` diff.
-- MSRV and CI toolchain 1.96: openusd and Crust (cranelift) require it.
+- MSRV 1.96 (openusd and Crust's cranelift require it); CI toolchain 1.99 (Crust pins it).
 
 ## Conventions
 

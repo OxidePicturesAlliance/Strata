@@ -190,7 +190,11 @@ writes `use strata::…` and `#[serde(crate = "strata::serde")]`. If the name is
 ever transferred, the package can be renamed without touching dependents'
 code.
 
-### B1. vdb — publish on crates.io (**blocking** for publishing `strata-platform`)
+### B1. vdb — publish on crates.io (**resolved**)
+
+Resolved 2026-10-24: vdb is published as `OpenVDB-rs` 0.1.0 (lib `OpenVDB_rs`,
+from `88639ae`); the facade depends on it as `vdb = { package = "OpenVDB-rs",
+version = "0.1" }`, so `strata::vdb` is unchanged. The original request:
 
 The facade cannot be published while it has a git dependency, so
 `crates/strata/Cargo.toml` is `publish = false` until this is done. Do not

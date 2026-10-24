@@ -45,13 +45,13 @@ deny = [
     { crate = "serde", deny-multiple-versions = true },
     # Minerals (a second copy, even of the same version from another source,
     # is a second, incompatible set of types).
+    { crate = "OpenVDB-rs", deny-multiple-versions = true },
     { crate = "ocio", deny-multiple-versions = true },
     { crate = "openqmc-rs", deny-multiple-versions = true },
     { crate = "opensubdiv-rs", deny-multiple-versions = true },
     { crate = "openusd", deny-multiple-versions = true },
     { crate = "openusd-schemas", deny-multiple-versions = true },
     { crate = "ptex-rust", deny-multiple-versions = true },
-    { crate = "vdb", deny-multiple-versions = true },
 ]
 
 [sources]
@@ -60,7 +60,6 @@ unknown-git = "deny"
 allow-registry = ["https://github.com/rust-lang/crates.io-index"]
 # Every entry is a blocking item in platform/AUDIT.md.
 allow-git = [
-    "https://github.com/OxidePicturesAlliance/vdb",
     "https://github.com/doubleailes/crust-render",
     "https://github.com/mxpv/openusd",
 ]

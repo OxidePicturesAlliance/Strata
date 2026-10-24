@@ -50,7 +50,7 @@
 //! |---|---|---|
 //! | `openusd` | `strata::openusd`, `strata::openusd_schemas` (every schema family) | `openusd`, `openusd-schemas` |
 //! | `opensubdiv` | `strata::opensubdiv` | `opensubdiv-rs` |
-//! | `vdb` | `strata::vdb` | `vdb` (git only for now) |
+//! | `vdb` | `strata::vdb` | `OpenVDB-rs` |
 //! | `ptex` | `strata::ptex` | `ptex-rust` |
 //! | `openqmc` | `strata::openqmc` | `openqmc-rs` |
 //! | `ocio` | `strata::ocio` | `ocio` |
