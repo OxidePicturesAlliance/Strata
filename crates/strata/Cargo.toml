@@ -65,7 +65,7 @@ openusd = { version = "0.8", optional = true }
 openusd-schemas = { version = "0.8", optional = true }
 ptex = { package = "ptex-rust", version = "0.5", optional = true }
 # Git-only: blocks publishing the facade on crates.io (platform/AUDIT.md, B1).
-vdb = { git = "https://github.com/OxidePicturesAlliance/vdb", rev = "6dbb632f13754169119939c3576b4fc3b65d434f", optional = true }
+vdb = { package = "OpenVDB-rs", version = "0.5", optional = true }
 
 [package.metadata.docs.rs]
 all-features = true
