@@ -61,6 +61,7 @@ Built by `strata-check` against the platform in every CI run.
 ## Blocking items
 
 - **openusd**: Release main (>= 68a867a, zip 9) as 0.9.0; Strata then drops its [patch.crates-io]
+- **vdb**: Add `[lib] name = "vdb"` (0.1.0's lib is `OpenVDB_rs`, but its tests still `use vdb::…`) and publish 0.1.1; Strata then moves test_ref to that release
 - **crust**: Depend on opensubdiv-rs from crates.io (`opensubdiv-rs = "0.5.0"`), not the git tag; strata-check patches it meanwhile
 
 ## Workspace patches (strata-check only)

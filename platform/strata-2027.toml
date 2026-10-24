@@ -113,13 +113,18 @@ version = "0.1"
 source = "crates.io"
 extra_packages = []
 repository = "https://github.com/OxidePicturesAlliance/vdb"
-test_ref = "88639ae15514a2f2fc2e00d4e8c7307f20ff3beb"
+# 0.1.0 was published from 88639ae, whose only change from 6dbb632 is the
+# package rename; its own tests still `use vdb::…` and do not compile there,
+# so CI tests the identical source at 6dbb632 until B1b lands.
+test_ref = "6dbb632f13754169119939c3576b4fc3b65d434f"
 test_args = ["--all-features"]
 cpp_library = "OpenVDB"
 cpp_target = "14.x"
 cpp_validated = "10.0.1"
 on_vfx_platform = true
-blocking = []
+blocking = [
+    "Add `[lib] name = \"vdb\"` (0.1.0's lib is `OpenVDB_rs`, but its tests still `use vdb::…`) and publish 0.1.1; Strata then moves test_ref to that release",
+]
 
 [minerals.ptex]
 package = "ptex-rust"
