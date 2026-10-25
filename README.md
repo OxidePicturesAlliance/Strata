@@ -77,7 +77,7 @@ passes 1 and 2.
 Every CI run publishes the result as a table (in the run summary, and as the `strata-status`
 artifact containing `STATUS.md` and `status.json`, ready for a future dashboard):
 
-Status of 2027.0.0-alpha.1 from a local run on Linux, Rust 1.96, 2026-10-23 (CI regenerates it on every run):
+Status of 2027.0.0-alpha.2 from a local run on Linux, Rust 1.99, 2026-10-25 (CI regenerates it on every run):
 
 | Mineral | Version | On crates.io | Builds with pins | One copy of each vocabulary crate | Own tests at pins | C++ target (CY2027) | Validated against | Verdict |
 |---|---|---|---|---|---|---|---|---|
@@ -86,7 +86,7 @@ Status of 2027.0.0-alpha.1 from a local run on Linux, Rust 1.96, 2026-10-23 (CI 
 | `opensubdiv` | 0.5 | ✅ | ✅ | ✅ | ✅ | OpenSubdiv 3.8.x | — | ⚪ undeclared |
 | `openusd` | 0.8 | ✅ | ✅ | ✅ | ✅ | AOUSD Core Specification 1.0.1 | 1.0.1 | ✅ conformant |
 | `ptex` | 0.5 | ✅ | ✅ | ✅ | ✅ | Ptex 2.5.x | — | ⚪ undeclared |
-| `vdb` | 0.1 | ❌ git only | ✅ | ✅ | ✅ | OpenVDB 14.x | 10.0.1 | 🟡 lagging |
+| `vdb` | 0.1 | ✅ | ✅ | ✅ | ✅ | OpenVDB 14.x | 10.0.1 | 🟡 lagging |
 
 ## Repository layout
 
