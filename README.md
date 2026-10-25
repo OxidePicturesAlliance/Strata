@@ -22,7 +22,7 @@ of truth; [`platform/AUDIT.md`](platform/AUDIT.md) records how the pins were cho
 
 ```toml
 [dependencies]
-strata-platform = { git = "https://github.com/OxidePicturesAlliance/strata", features = ["openusd", "vdb"] }
+strata-platform = { version = "2027.0.0-alpha.2", features = ["openusd", "vdb"] }
 ```
 
 ```rust
