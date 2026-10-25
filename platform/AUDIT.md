@@ -20,7 +20,7 @@ was read at its default-branch `HEAD` on that date:
 |---|---|---|---|---|---|---|---|
 | OpenUSD | `openusd` (+ `openusd-schemas`) | `openusd` | 0.8.0 (unreleased commits on `main`) | **0.8.0** | 2024 | 1.96 | MIT |
 | OpenSubdiv | `opensubdiv-rs` | `opensubdiv_rs` | 0.5.0 | **0.5.0** | 2021 | 1.85 | MIT |
-| OpenVDB | `vdb` | `vdb` | 0.1.0 | **no — name taken** (see below) | 2021 | *not declared* | MIT |
+| OpenVDB | `vdb` | `vdb` | 0.1.0 | **0.1.0 as `OpenVDB-rs`** (`vdb` is taken, see below) | 2021 | *not declared* | MIT |
 | Ptex | `ptex-rust` | `ptex` | 0.5.0 | **0.5.0** | 2021 | 1.85 | MIT |
 | OpenQMC | `openqmc-rs` | `openqmc` | 0.2.4 | **0.2.4** | 2024 | 1.85 | Apache-2.0 |
 | OpenColorIO (WIP) | `ocio` | `ocio` | 0.2.2 | **0.2.2** | 2021 | *not declared* | MIT AND BSD-3-Clause |
@@ -28,12 +28,9 @@ was read at its default-branch `HEAD` on that date:
 
 Notes:
 
-- **`vdb` is git-only, and the crates.io name `vdb` belongs to an unrelated
-  crate** (rvputten/vdb, v0.4.0, published 2019). The mineral cannot be
-  published under its current package name. Either rename the package (e.g.
-  `openvdb-rs`, keeping `[lib] name = "vdb"` so `use vdb::…` is unchanged) or
-  obtain a name transfer — and then publish ≥ 0.5.0, since 0.1.0–0.4.0 are
-  already taken by the old crate.
+- **The crates.io name `vdb` belongs to an unrelated crate** (rvputten/vdb,
+  v0.4.0, published 2019), so at audit time the mineral was git-only. It has
+  since been published as `OpenVDB-rs` 0.1.0 (lib `OpenVDB_rs`); see B1.
 - `openusd` 0.8.0 on crates.io depends on `zip ^8.2`; `main` has moved to
   `zip 9`, and Crust depends on API only on `main` (§3). A 0.9 release is
   needed before Strata can use crates.io only.
@@ -148,11 +145,11 @@ the vocabulary list.
 
 ### Minerals
 
-| Mineral | Pin in the facade | Source for 2027.0.0-alpha.1 |
+| Mineral | Pin in the facade | Source for 2027.0.0-alpha.2 |
 |---|---|---|
 | openusd + openusd-schemas | `"0.8"` | **git `68a867a`** (was `bb9058e`, see §3.3) via `[patch.crates-io]` in the workspace (needed by Crust); the facade itself depends on crates.io `0.8` |
 | opensubdiv-rs | `"0.5"` | crates.io |
-| vdb | — | **git `6dbb632`** (`rev =`) — git-only |
+| vdb (`OpenVDB-rs`) | `"0.1"` | crates.io (was git `6dbb632` in alpha.1; own tests still run at `6dbb632`, see B1b) |
 | ptex-rust | `"0.5"` | crates.io |
 | openqmc-rs | `"0.2.4"` | crates.io |
 | ocio | `"0.2.2"` | crates.io (WIP) |
@@ -217,12 +214,10 @@ package name). The fix, then publish 0.1.1:
 name = "vdb"                 # keeps `use vdb::…` working, as originally requested
 ```
 
-The original request:
-
-The facade cannot be published while it has a git dependency, so
-`crates/strata/Cargo.toml` is `publish = false` until this is done. Do not
-work around it by adding `version = "0.1"` to the git dependency: `cargo
-publish` would then resolve the unrelated crates.io `vdb` in its place.
+The original request (kept for the record). While vdb was a git dependency
+the facade was `publish = false`; now that it comes from crates.io the facade
+is `publish = true`. Never depend on the crates.io `vdb`: it is the unrelated
+rvputten crate.
 
 ```toml
 # vdb/Cargo.toml
