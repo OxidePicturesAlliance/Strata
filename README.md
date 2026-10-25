@@ -100,6 +100,7 @@ platform/strata-2027.toml  the spec (source of truth)
 platform/STRATA-2027.md    the spec for humans (generated: cargo xtask render)
 platform/AUDIT.md          the 2027 dependency audit
 .github/workflows/ci.yml   CI
+.github/workflows/release.yml  release: CI, crates.io, GitHub release
 ```
 
 ## Development
@@ -113,6 +114,20 @@ cargo xtask test-mineral vdb   # one mineral's own tests at Strata's pins
 ```
 
 To change a pin, edit `platform/strata-2027.toml` first, then make `cargo xtask check` pass.
+
+## Releasing
+
+1. Bump `platform.version` in `platform/strata-2027.toml` and `version` in
+   `crates/strata/Cargo.toml`, run `cargo xtask render`, and merge to `main`.
+2. Tag that commit `v<version>` (e.g. `git tag v2027.0.0-alpha.3 && git push origin v2027.0.0-alpha.3`).
+
+`release.yml` checks the tag against the spec, runs the whole of CI (mineral tests included),
+publishes `strata-platform` to crates.io and creates the GitHub release: the conformance table
+is the release notes, and `STATUS.md`, `status.json` and the spec are attached. A version with
+a pre-release suffix (`-alpha.N`) becomes a GitHub pre-release.
+
+Publishing uses crates.io trusted publishing: on crates.io, `strata-platform` must list this
+repository, the workflow `release.yml` and the environment `crates-io`.
 
 ## License
 

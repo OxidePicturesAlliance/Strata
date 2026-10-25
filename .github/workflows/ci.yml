@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  # release.yml runs the whole of CI as its gate.
+  workflow_call:
   # Minerals and Crust move on their own; re-check the platform weekly.
   schedule:
     - cron: "17 5 * * 1"
